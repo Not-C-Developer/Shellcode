@@ -1182,9 +1182,6 @@ namespace Code_Execution
         //EnumDirTreeA
         //EnumDirTreeW
         /*
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr GetCurrentProcess();
-
         [DllImport("Dbghelp.dll")]
         private static extern bool SymInitialize(
             IntPtr hProcess,
@@ -1240,9 +1237,6 @@ namespace Code_Execution
         //EnumerateLoadedModules64
         //EnumerateLoadedModulesW64
         /*
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr GetCurrentProcess();
-
         [DllImport("dbghelp.dll")]
         private static extern bool EnumerateLoadedModules(
             IntPtr hprocess,
@@ -1269,9 +1263,6 @@ namespace Code_Execution
         //EnumerateLoadedModulesEx
         //EnumerateLoadedModulesExW
         /*
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr GetCurrentProcess();
-
         [DllImport("dbghelp.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         public static extern bool EnumerateLoadedModulesEx(
             IntPtr hProcess,
@@ -3271,9 +3262,6 @@ namespace Code_Execution
             public KDHELP64 KdHelp;
         }
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr GetCurrentProcess();
-
         [DllImport("DbgHelp.dll")]
         static extern bool StackWalk(
             MachineType MachineType,
@@ -3325,9 +3313,6 @@ namespace Code_Execution
         //[69]
         //SymEnumProcesses
         /*
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr GetCurrentProcess();
-
         [DllImport("Dbghelp.dll")]
         private static extern bool SymInitialize(
             IntPtr hProcess,
@@ -3385,9 +3370,6 @@ namespace Code_Execution
         public const int SSRVOPT_DWORDPTR = 0x0004;
         public const int SSRVOPT_GUIDPTR = 0x0008;
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr GetCurrentProcess();
-
         [DllImport("Dbghelp.dll")]
         public static extern bool SymInitialize(
             IntPtr hProcess,
@@ -3421,9 +3403,6 @@ namespace Code_Execution
         //[6B]
         //SymRegisterCallback
         /*
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr GetCurrentProcess();
-
         [DllImport("DbgHelp.dll")]
         static extern bool SymInitialize(
             IntPtr hProcess,
