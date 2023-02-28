@@ -1161,6 +1161,9 @@ namespace Code_Execution
         //[26]
         //EnumDesktopWindows
         /*
+        [DllImport("kernel32.dll")]
+        static extern uint GetCurrentThreadId();
+
         [DllImport("user32.dll", SetLastError = true)]
         static extern IntPtr GetThreadDesktop(
             uint dwThreadId
