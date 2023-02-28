@@ -1,2 +1,11 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+bin
+.DC_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
+**/*.vsidx
+**/*.lock
+**/.suo

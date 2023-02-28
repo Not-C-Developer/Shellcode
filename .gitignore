@@ -1,0 +1,9 @@
+
+.DS_Store
+*.vsidx
+*.lock
+Code Execution/.vs/Code Execution/v17/.suo
+*.cache
+Code Execution/obj/Debug/Code Execution.csproj.FileListAbsolute.txt
+Code Execution/obj/Debug/.NETFramework,Version=v4.7.2.AssemblyAttributes.cs
+Code Execution/Properties/AssemblyInfo.cs
