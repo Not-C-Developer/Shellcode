@@ -9,14 +9,12 @@
 	COPY MEMORY
 	EXECUTION FUNCTION
 	FreeADsMem
-
 [01]
 	CoTaskMemAlloc
 	VirtualProtect			PAGE_EXECUTE_READWRITE
 	COPY MEMORY
 	EXECUTION FUNCTION
 	CoTaskMemFree
-
 [02]
 	CreateFileMapping 		PAGE_EXECUTE_READWRITE
 		OR  CreateFileMappingA
