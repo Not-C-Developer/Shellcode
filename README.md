@@ -1,5 +1,20 @@
 # Shellcode
 
+## Shellcode
+```
+[00] NASM x86_64
+```
+
+## Shellcode Location
+```
+[00]	Local Varible
+[01]	Global Variable
+[02]	Resource File
+[03]	File From Disk		!NOT LOTD!
+[04]	Network
+
+```
+
 ## Memory Allocation Functions
 
 ```
@@ -22,7 +37,7 @@
 	MapViewOfFile			Write|Execute
 		OR  MapViewOfFile3
 	 	OR  MapViewOfFileEx
-		//NEED to FIND way MapViewOfFile2		Function not found
+		!NEED to FIND way MapViewOfFile2		Function not found!
 	COPY MEMORY
 	EXECUTION FUNCTION
 	UnmapViewOfFile
@@ -62,7 +77,7 @@
 [08]
 	NtCreateSectionEx		PAGE_EXECUTE_READWRITE
 	NtMapViewOfSection		PAGE_EXECUTE_READWRITE
-		//NEED to FIND way NtMapViewOfSectionEx		C0000005 (STATUS_ACCESS_VIOLATION)
+		!NEED to FIND way NtMapViewOfSectionEx		C0000005 (STATUS_ACCESS_VIOLATION)!
 	COPY MEMORY
 	EXECUTION FUNCTION
 	NtUnmapViewOfSectionEx

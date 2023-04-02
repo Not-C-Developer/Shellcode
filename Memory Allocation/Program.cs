@@ -18,6 +18,7 @@ namespace Memory_Allocation
     internal class Program
     {
         //[00]
+        //SHELLCODE LOCATION
         //AllocADsMem
         //VirtualProtect            PAGE_EXECUTE_READWRITE
         //COPY MEMORY
@@ -75,6 +76,7 @@ namespace Memory_Allocation
         */
 
         //[01]
+        //SHELLCODE LOCATION
         //CoTaskMemAlloc
         //VirtualProtect            PAGE_EXECUTE_READWRITE
         //COPY MEMORY
@@ -132,6 +134,7 @@ namespace Memory_Allocation
         */
 
         //[02]
+        //SHELLCODE LOCATION
         //CreateFileMapping         PAGE_EXECUTE_READWRITE
         //  OR  CreateFileMappingA
         //  OR  CreateFileMappingW
@@ -265,6 +268,7 @@ namespace Memory_Allocation
         */
 
         //[03]
+        //SHELLCODE LOCATION
         //GlobalAlloc               GHND
         //GlobalLock
         //VirtualProtect            PAGE_EXECUTE_READWRITE
@@ -359,6 +363,7 @@ namespace Memory_Allocation
         */
 
         //[04]
+        //SHELLCODE LOCATION
         //GlobalAlloc               GPTR
         //VirtualProtect            PAGE_EXECUTE_READWRITE
         //COPY MEMORY
@@ -440,6 +445,7 @@ namespace Memory_Allocation
         */
 
         //[05]
+        //SHELLCODE LOCATION
         //HeapCreate
         //HeapAlloc
         //COPY MEMORY
@@ -517,6 +523,7 @@ namespace Memory_Allocation
         */
 
         //[06]
+        //SHELLCODE LOCATION
         //NtAllocateVirtualMemory   PAGE_EXECUTE_READWRITE
         //COPY MEMORY
         //EXECUTION FUNCTION
@@ -542,6 +549,7 @@ namespace Memory_Allocation
         */
 
         //[07]
+        //SHELLCODE LOCATION
         //NtCreateSection           PAGE_EXECUTE_READWRITE
         //NtMapViewOfSection        PAGE_EXECUTE_READWRITE
         //COPY MEMORY
@@ -601,6 +609,7 @@ namespace Memory_Allocation
         */
 
         //[08]
+        //SHELLCODE LOCATION
         //NtCreateSectionEx         PAGE_EXECUTE_READWRITE
         //NtMapViewOfSection        PAGE_EXECUTE_READWRITE
         // NEED to FIND way NtMapViewOfSectionEx      
@@ -743,6 +752,7 @@ namespace Memory_Allocation
         */
 
         //[09]
+        //SHELLCODE LOCATION
         //RtlCreateHeap
         //RtlAllocateHeap
         //COPY MEMORY
@@ -824,6 +834,7 @@ namespace Memory_Allocation
         */
 
         //[0A]
+        //SHELLCODE LOCATION
         //VirtualAlloc
         //COPY MEMORY
         //EXECUTION FUNCTION
@@ -846,6 +857,7 @@ namespace Memory_Allocation
         */
 
         //[0B]
+        //SHELLCODE LOCATION
         //VirtualAlloc2
         //COPY MEMORY
         //EXECUTION FUNCTION
@@ -871,6 +883,7 @@ namespace Memory_Allocation
         */
 
         //[0C]
+        //SHELLCODE LOCATION
         //VirtualAllocEx
         //COPY MEMORY
         //EXECUTION FUNCTION
@@ -895,6 +908,7 @@ namespace Memory_Allocation
         */
 
         //[0D]
+        //SHELLCODE LOCATION
         //LocalAlloc
         //VirtualProtect            PAGE_EXECUTE_READWRITE
         //COPY MEMORY
@@ -971,6 +985,7 @@ namespace Memory_Allocation
         */
 
         //[0E]
+        //SHELLCODE LOCATION
         //SHAlloc
         //VirtualProtect            PAGE_EXECUTE_READWRITE
         //COPY MEMORY
@@ -1028,6 +1043,7 @@ namespace Memory_Allocation
         */
 
         //[0F]
+        //SHELLCODE LOCATION
         //VirtualAllocExNuma
         //COPY MEMORY
         //EXECUTION FUNCTION
@@ -1053,6 +1069,7 @@ namespace Memory_Allocation
         */
 
         //[10]
+        //SHELLCODE LOCATION
         //GCHandle.Alloc
         //.AddrOfPinnedObject();
         //VirtualProtect            PAGE_EXECUTE_READWRITE
@@ -1101,6 +1118,7 @@ namespace Memory_Allocation
         */
 
         //[11]
+        //SHELLCODE LOCATION
         //Marshal.AllocCoTaskMem
         //VirtualProtect            PAGE_EXECUTE_READWRITE
         //COPY MEMORY
@@ -1147,9 +1165,57 @@ namespace Memory_Allocation
         );
         */
 
+        //[12]
+        //SHELLCODE LOCATION
+        //AllocHGlobal
+        //VirtualProtect            PAGE_EXECUTE_READWRITE
+        //COPY MEMORY
+        //EXECUTION FUNCTION
+        //FreeHGlobal
+        /*
+        public enum MEM_PAGE : uint
+        {
+            PAGE_EXECUTE = 0x00000010,
+            PAGE_EXECUTE_READ = 0x00000020,
+            PAGE_EXECUTE_READWRITE = 0x00000040,
+            PAGE_EXECUTE_WRITECOPY = 0x00000080,
+            PAGE_NOACCESS = 0x00000001,
+            PAGE_READONLY = 0x00000002,
+            PAGE_READWRITE = 0x00000004,
+            PAGE_WRITECOPY = 0x00000008,
+            PAGE_GUARD = 0x00000100,
+            PAGE_NOCACHE = 0x00000200,
+            PAGE_WRITECOMBINE = 0x00000400
+        }
+
+        public enum MEM_COMMIT
+        {
+            MEM_COMMIT = 0x1000,
+            MEM_RESERVE = 0x2000,
+            MEM_DECOMMIT = 0x4000,
+            MEM_RELEASE = 0x8000,
+            MEM_FREE = 0x10000,
+            MEM_PRIVATE = 0x20000,
+            MEM_MAPPED = 0x40000,
+            MEM_RESET = 0x80000,
+            MEM_TOP_DOWN = 0x100000,
+            MEM_WRITE_WATCH = 0x200000,
+            MEM_PHYSICAL = 0x400000,
+            MEM_IMAGE = 0x1000000
+        }
+
+        [DllImport("kernel32.dll")]
+        static extern bool VirtualProtect(
+          IntPtr lpAddress,
+          int dwSize,
+          MEM_PAGE flNewProtect,
+          out uint lpflOldProtect
+        );
+        */
+
         static void Main(string[] args)
         {
-            //WRITE SHELLCODE
+            //SHELLCODE LOCATION
 
             //ALLOCATION MEMORY
             //[00]
@@ -1547,7 +1613,20 @@ namespace Memory_Allocation
             );
             */
 
-            //COPY MEMORY
+            //[12]
+            /*
+            var hMem = Marshal.AllocHGlobal(buf.Length);
+
+            uint lpflOldProtect = 0;
+            bool status = VirtualProtect(
+                hMem,
+                buf.Length,
+                MEM_PAGE.PAGE_EXECUTE_READWRITE,
+                out lpflOldProtect
+            );
+            */
+
+            //WRITE MEMORY
 
             //EXECUTION FUNCTION
 
@@ -1708,6 +1787,11 @@ namespace Memory_Allocation
             Marshal.FreeCoTaskMem(
                 hMem
             );
+            */
+
+            //[12]
+            /*
+            Marshal.FreeHGlobal(hMem);
             */
         }
     }

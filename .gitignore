@@ -12,3 +12,42 @@ Memory Allocation/Properties/AssemblyInfo.cs
 Memory Allocation/obj/Debug/Memory Allocation.exe.config
 *.exe
 *.pdb
+Memory Writing/obj/Debug/.NETFramework,Version=v4.7.2.AssemblyAttributes.cs
+Memory Writing/.vs/Memory Writing/v17/.suo
+Memory Writing/Properties/AssemblyInfo.cs
+Memory Writing/bin/Debug/Memory Writing.exe.config
+Memory Writing/obj/Debug/Memory Writing.csproj.FileListAbsolute.txt
+Shellcode Location/.vs/Shellcode Location/v17/.suo
+Shellcode Location/bin/Debug/Shellcode Location.exe.config
+Shellcode Location/bin/x64/Debug/Shellcode Location.exe.config
+Shellcode Location/obj/Debug/.NETFramework,Version=v4.7.2.AssemblyAttributes.cs
+Shellcode Location/obj/Debug/Shellcode Location.csproj.FileListAbsolute.txt
+Shellcode Location/obj/x64/Debug/.NETFramework,Version=v4.7.2.AssemblyAttributes.cs
+Shellcode Location/obj/x64/Debug/Shellcode Location.csproj.FileListAbsolute.txt
+Shellcode Location/obj/x64/Debug/Shellcode_Location.Properties.Resources.resources
+Shellcode Location/obj/x64/Debug/TempPE/Properties.Resources.Designer.cs.dll
+Memory Allocation/bin/Debug/Memory Allocation.exe.config
+Shellcode Location/Properties/AssemblyInfo.cs
+Shellcode Location/Properties/Settings.settings
+Shellcode Location/Properties/Settings.Designer.cs
+Shellcode Location/Shellcode Location.csproj.user
+Shellcode Location/obj/Release/Shellcode Location.csproj.FileListAbsolute.txt
+Shellcode Location/obj/Debug/TempPE/Properties.Resources.Designer.cs.dll
+Shellcode Location/obj/Release/TempPE/Properties.Resources.Designer.cs.dll
+Shellcode Location/obj/Release/Shellcode_Location.Properties.Resources.resources
+Shellcode/NASM (x64)/Calc/.vs/Calc/v17/.suo
+Shellcode Location/bin/Release/Shellcode Location.exe.config
+Shellcode Location/calc.bin
+Shellcode Location/obj/Release/.NETFramework,Version=v4.7.2.AssemblyAttributes.cs
+Shellcode/NASM (x64)/Calc/x64/Release/Calc.exe.recipe
+Shellcode/NASM (x64)/Calc/x64/Release/Calc.log
+Shellcode/NASM (x64)/Calc/x64/Release/Calc.tlog/Calc.lastbuildstate
+Shellcode/NASM (x64)/Calc/x64/Release/Calc.tlog/link.command.1.tlog
+Shellcode/NASM (x64)/Calc/x64/Release/Calc.tlog/link.read.1.tlog
+Shellcode/NASM (x64)/Calc/x64/Release/Calc.tlog/link.write.1.tlog
+Shellcode/NASM (x64)/Calc/x64/Release/Calc.tlog/Nasm.read.1u.tlog
+Shellcode/NASM (x64)/Calc/x64/Release/Calc.tlog/Nasm.write.1u.tlog
+Shellcode/NASM (x64)/Calc/x64/Release/Calc.vcxproj.FileListAbsolute.txt
+Shellcode/NASM (x64)/Calc/x64/Release/Source.obj
+Shellcode/NASM (x64)/Calc/.vs/Calc/v17/Browse.VC.db
+Research.txt

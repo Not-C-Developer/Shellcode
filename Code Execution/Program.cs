@@ -9,50 +9,6 @@ namespace Code_Execution
 {
     internal class Program
     {
-        public enum MEM_COMMIT
-        {
-            MEM_COMMIT = 0x1000,
-            MEM_RESERVE = 0x2000,
-            MEM_DECOMMIT = 0x4000,
-            MEM_RELEASE = 0x8000,
-            MEM_FREE = 0x10000,
-            MEM_PRIVATE = 0x20000,
-            MEM_MAPPED = 0x40000,
-            MEM_RESET = 0x80000,
-            MEM_TOP_DOWN = 0x100000,
-            MEM_WRITE_WATCH = 0x200000,
-            MEM_PHYSICAL = 0x400000,
-            MEM_IMAGE = 0x1000000
-        }
-        public enum MEM_PAGE
-        {
-            PAGE_NOACCESS = 0x1,
-            PAGE_READONLY = 0x2,
-            PAGE_READWRITE = 0x4,
-            PAGE_WRITECOPY = 0x8,
-            PAGE_EXECUTE = 0x10,
-            PAGE_EXECUTE_READ = 0x20,
-            PAGE_EXECUTE_READWRITE = 0x40,
-            PAGE_EXECUTE_READWRITECOPY = 0x50,
-            PAGE_EXECUTE_WRITECOPY = 0x80,
-            PAGE_GUARD = 0x100,
-            PAGE_NOCACHE = 0x200,
-            PAGE_WRITECOMBINE = 0x400,
-        }
-
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr VirtualAlloc(
-            IntPtr lpStartAddr,
-            uint size,
-            uint flAllocationType,
-            uint flProtect
-        );
-
-        [DllImport("kernel32.dll")]
-        static extern IntPtr GetCurrentProcess();
-
-        [DllImport("kernel32.dll")]
-        static extern IntPtr GetCurrentThread();
 
         //[00]
         //acmDriverEnum
@@ -3647,11 +3603,18 @@ namespace Code_Execution
 
         static void Main(string[] args)
         {
+            //SHELLCODE LOCATION
+
+            //ALLOCATION MEMORY
+
+            //WRITE2 MEMORY
+
+            //EXECUTION FUNCTION
             //[00]
             //acmDriverEnum
             /*
             acmDriverEnum(
-                funcAddr,
+                hMem,
                 0,
                 0
             );
@@ -3666,7 +3629,7 @@ namespace Code_Execution
             acmFormatTagEnum(
                 IntPtr.Zero,
                 ref sACMFilter,
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 0
             );
@@ -3680,7 +3643,7 @@ namespace Code_Execution
                 "C:\\windows\\notepad.exe",
                 "",
                 "",
-                funcAddr
+                hMem
             );
             */
 
@@ -3690,7 +3653,7 @@ namespace Code_Execution
             //CallWindowProcW
             /*
             CallWindowProc(
-                funcAddr,
+                hMem,
                 0,
                 0,
                 0,
@@ -3698,7 +3661,7 @@ namespace Code_Execution
             );
 
             CallWindowProcA(
-                funcAddr,
+                hMem,
                 0,
                 0,
                 0,
@@ -3706,7 +3669,7 @@ namespace Code_Execution
             );
 
             CallWindowProcW(
-                funcAddr,
+                hMem,
                 0,
                 0,
                 0,
@@ -3724,7 +3687,7 @@ namespace Code_Execution
                 0,
                 IntPtr.Zero,
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 0,
                 IntPtr.Zero,
                 out ICM
@@ -3736,7 +3699,7 @@ namespace Code_Execution
             /*
             CERT_CREATE_CONTEXT_PARA sCertCreate = new CERT_CREATE_CONTEXT_PARA();
             sCertCreate.cbSize = (uint)Marshal.SizeOf(sCertCreate);
-            sCertCreate.pfnFree = funcAddr;
+            sCertCreate.pfnFree = hMem;
 
             byte pbEn = new byte { };
 
@@ -3757,7 +3720,7 @@ namespace Code_Execution
                 "My",
                 CERT_SYSTEM_STORE_LOCAL_MACHINE,
                 0,
-                funcAddr
+                hMem
             );
             */
 
@@ -3768,7 +3731,7 @@ namespace Code_Execution
                 CERT_SYSTEM_STORE_CURRENT_USER,
                 IntPtr.Zero,
                 IntPtr.Zero,
-                funcAddr
+                hMem
             );
             */
 
@@ -3778,7 +3741,7 @@ namespace Code_Execution
             CertEnumSystemStoreLocation(
                 0,
                 IntPtr.Zero,
-                funcAddr
+                hMem
             );
             */
 
@@ -3790,7 +3753,7 @@ namespace Code_Execution
             CHOOSECOLOR sCC = new CHOOSECOLOR();
             sCC.lStructSize = (uint)Marshal.SizeOf(sCC);
             sCC.Flags = CC_ENABLEHOOK;
-            sCC.lpfnHook = funcAddr;
+            sCC.lpfnHook = hMem;
 
             ChooseColor(
                 ref sCC
@@ -3805,7 +3768,7 @@ namespace Code_Execution
             CHOOSEFONT sCF = new CHOOSEFONT();
             sCF.lStructSize = Marshal.SizeOf(sCF);
             sCF.Flags = CF_ENABLEHOOK;
-            sCF.lpfnHook = funcAddr;
+            sCF.lpfnHook = hMem;
 
             ChooseFont(
                 ref sCF
@@ -3818,7 +3781,7 @@ namespace Code_Execution
             CLUS_WORKER sCW = new CLUS_WORKER();
             ClusWorkerCreate(
                 out sCW,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
 
@@ -3837,7 +3800,7 @@ namespace Code_Execution
             param.dwSize = (uint)Marshal.SizeOf(param);
             param.dwCopyFlags = (uint)CopyFileFlags.COPY_FILE_FAIL_IF_EXISTS;
             param.pfCancel = IntPtr.Zero;
-            param.pProgressRoutine = funcAddr;
+            param.pProgressRoutine = hMem;
             param.pvCallbackContext = IntPtr.Zero;
 
             DeleteFileW(
@@ -3861,7 +3824,7 @@ namespace Code_Execution
             bool success = CopyFileEx(
                 "C:\\Windows\\system32\\cmd.exe", // File MUST be exist
                 "C:\\Windows\\Temp\\backup.log",
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 ref s,
                 CopyFileFlags.COPY_FILE_FAIL_IF_EXISTS
@@ -3878,21 +3841,21 @@ namespace Code_Execution
                 IntPtr.Zero,
                 ref DT,
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             CreateDialogIndirectParamA(
                 IntPtr.Zero,
                 ref DT,
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             CreateDialogIndirectParamW(
                 IntPtr.Zero,
                 ref DT,
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -3903,7 +3866,7 @@ namespace Code_Execution
             IntPtr hThread = CreateThread(
                 IntPtr.Zero,
                 0,
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 0,
                 IntPtr.Zero
@@ -3924,7 +3887,7 @@ namespace Code_Execution
             sFiletime.DateTimeHigh = (uint)lDueTime.High;
 
             IntPtr TPTimer = CreateThreadpoolTimer(
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 IntPtr.Zero
             );
@@ -3958,7 +3921,7 @@ namespace Code_Execution
             );
 
             IntPtr ptp_w = CreateThreadpoolWait(
-                funcAddr,
+                hMem,
                 0,
                 0
             );
@@ -3981,7 +3944,7 @@ namespace Code_Execution
             //CreateThreadpoolWork
             /*
             IntPtr TPWork = CreateThreadpoolWork(
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 IntPtr.Zero
             );
@@ -4012,7 +3975,7 @@ namespace Code_Execution
             CreateTimerQueueTimer(
                 out timer,
                 queue,
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 100,
                 0,
@@ -4033,7 +3996,7 @@ namespace Code_Execution
                 "",
                 0,
                 IntPtr.Zero,
-                funcAddr
+                hMem
             );
             */
 
@@ -4044,7 +4007,7 @@ namespace Code_Execution
                 0,
                 0,
                 IntPtr.Zero,
-                funcAddr
+                hMem
             );
             */
 
@@ -4054,12 +4017,12 @@ namespace Code_Execution
             /*
             DbgHelpCreateUserDump(
                 "C:\\Users\\Public\\test.txt",
-                funcAddr,
+                hMem,
                 0
             );
             DbgHelpCreateUserDumpW(
                 "C:\\Users\\Public\\test.txt",
-                funcAddr,
+                hMem,
                 0
             );
             */
@@ -4072,19 +4035,19 @@ namespace Code_Execution
             uint idInst = 0;
             DdeInitialize(
                 ref idInst,
-                funcAddr,
+                hMem,
                 DDE_INITIALIZE_COMMAND.MF_CALLBACKS,
                 0
             );
             DdeInitializeA(
                 ref idInst,
-                funcAddr,
+                hMem,
                 DDE_INITIALIZE_COMMAND.MF_CALLBACKS,
                 0
             );
             DdeInitializeW(
                 ref idInst,
-                funcAddr,
+                hMem,
                 DDE_INITIALIZE_COMMAND.MF_CALLBACKS,
                 0
             );
@@ -4107,21 +4070,21 @@ namespace Code_Execution
                 IntPtr.Zero,
                 ref DT,
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 0
             );
             DialogBoxIndirectParamA(
                 IntPtr.Zero,
                 ref DT,
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 0
             );
             DialogBoxIndirectParamW(
                 IntPtr.Zero,
                 ref DT,
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 0
             );
             */
@@ -4132,17 +4095,17 @@ namespace Code_Execution
             //DirectDrawEnumerateExW
             /*
             DirectDrawEnumerateEx(
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 0
             );
             DirectDrawEnumerateExA(
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 0
             );
             DirectDrawEnumerateExW(
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 0
             );
@@ -4154,15 +4117,15 @@ namespace Code_Execution
             //DirectSoundCaptureEnumerateW
             /*
             DirectSoundCaptureEnumerate(
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             DirectSoundCaptureEnumerateA(
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             DirectSoundCaptureEnumerateW(
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -4173,15 +4136,15 @@ namespace Code_Execution
             //DirectSoundEnumerateW
             /*
             DirectSoundEnumerate(
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             DirectSoundEnumerateA(
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             DirectSoundEnumerateW(
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -4200,7 +4163,7 @@ namespace Code_Execution
             sMDNS.QueryType = DNS_TYPE_ZERO;
             sMDNS.QueryOptions = DNS_QUERY_STANDARD;
             sMDNS.InterfaceIndex = 0;
-            sMDNS.pQueryCallback = funcAddr;
+            sMDNS.pQueryCallback = hMem;
             sMDNS.pQueryContext = IntPtr.Zero;
             sMDNS.ulResendCount = 0;
             sMDNS.fAnswerReceived = false;
@@ -4226,7 +4189,7 @@ namespace Code_Execution
             DrawState(
                 hDC,
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 IntPtr.Zero,
                 0,
@@ -4238,7 +4201,7 @@ namespace Code_Execution
             DrawStateA(
                 hDC,
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 IntPtr.Zero,
                 0,
@@ -4250,7 +4213,7 @@ namespace Code_Execution
             DrawStateW(
                 hDC,
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 IntPtr.Zero,
                 0,
@@ -4276,7 +4239,7 @@ namespace Code_Execution
             ); //Append
             DSA_EnumCallback(
                 hDSA,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             DSA_Destroy(
@@ -4290,19 +4253,19 @@ namespace Code_Execution
             //EnumCalendarInfoW
             /*
             EnumCalendarInfo(
-                funcAddr,
+                hMem,
                 LOCALE_USER_DEFAULT,
                 ENUM_ALL_CALENDARS,
                 CAL_SMONTHNAME1
             );
             EnumCalendarInfoA(
-                funcAddr,
+                hMem,
                 LOCALE_USER_DEFAULT,
                 ENUM_ALL_CALENDARS,
                 CAL_SMONTHNAME1
             );
             EnumCalendarInfoW(
-                funcAddr,
+                hMem,
                 LOCALE_USER_DEFAULT,
                 ENUM_ALL_CALENDARS,
                 CAL_SMONTHNAME1
@@ -4313,7 +4276,7 @@ namespace Code_Execution
             //EnumCalendarInfoEx
             /*
             EnumCalendarInfoEx(
-                funcAddr,
+                hMem,
                 LOCALE_USER_DEFAULT,
                 ENUM_ALL_CALENDARS,
                 CAL_SMONTHNAME1
@@ -4325,7 +4288,7 @@ namespace Code_Execution
             /*
             EnumChildWindows(
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -4336,17 +4299,17 @@ namespace Code_Execution
             //EnumDateFormatsW
             /*
             EnumDateFormats(
-                funcAddr,
+                hMem,
                 0,
                 0
             );
             EnumDateFormatsA(
-                funcAddr,
+                hMem,
                 0,
                 0
             );
             EnumDateFormatsW(
-                funcAddr,
+                hMem,
                 0,
                 0
             );
@@ -4356,7 +4319,7 @@ namespace Code_Execution
             //EnumDateFormatsEx
             /*
             EnumDateFormatsEx(
-                funcAddr,
+                hMem,
                 0x0800,
                 0
             );
@@ -4366,7 +4329,7 @@ namespace Code_Execution
             //EnumDateFormatsExEx
             /*
             EnumDateFormatsExEx(
-                funcAddr,
+                hMem,
                 string.Empty,
                 GetDateFormatFlags.DATE_SHORTDATE,
                 0
@@ -4380,17 +4343,17 @@ namespace Code_Execution
             /*
             EnumDesktops(
                 GetProcessWindowStation(),
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             EnumDesktopsA(
                 GetProcessWindowStation(),
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             EnumDesktopsW(
                 GetProcessWindowStation(),
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -4400,7 +4363,7 @@ namespace Code_Execution
             /*
             EnumDesktopWindows(
                 GetThreadDesktop(GetCurrentThreadId()),
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -4411,32 +4374,32 @@ namespace Code_Execution
             //EnumDirTreeW
             /*
             SymInitialize(
-                GetCurrentProcess(),
+                Process.GetCurrentProcess().Handle,
                 string.Empty,
                 false
             );
             EnumDirTree(
-                GetCurrentProcess(),
+                Process.GetCurrentProcess().Handle,
                 "C:\\Windows",
                 "*.log",
                 "",
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             EnumDirTreeA(
-                GetCurrentProcess(),
+                Process.GetCurrentProcess().Handle,
                 "C:\\Windows",
                 "*.log",
                 "",
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             EnumDirTreeW(
-                GetCurrentProcess(),
+                Process.GetCurrentProcess().Handle,
                 "C:\\Windows",
                 "*.log",
                 "",
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -4447,7 +4410,7 @@ namespace Code_Execution
             EnumDisplayMonitors(
                 IntPtr.Zero,
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -4458,18 +4421,18 @@ namespace Code_Execution
             //EnumerateLoadedModulesW64
             /*
             EnumerateLoadedModules(
-                GetCurrentProcess(),
-                funcAddr,
+                Process.GetCurrentProcess().Handle,
+                hMem,
                 IntPtr.Zero
             );
             EnumerateLoadedModules64(
-                GetCurrentProcess(),
-                funcAddr,
+                Process.GetCurrentProcess().Handle,
+                hMem,
                 IntPtr.Zero
             );
             EnumerateLoadedModulesW64(
-                GetCurrentProcess(),
-                funcAddr,
+                Process.GetCurrentProcess().Handle,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -4479,13 +4442,13 @@ namespace Code_Execution
             //EnumerateLoadedModulesExW
             /*
             EnumerateLoadedModulesEx(
-                GetCurrentProcess(),
-                funcAddr,
+                Process.GetCurrentProcess().Handle,
+                hMem,
                 IntPtr.Zero
             );
             EnumerateLoadedModulesExW(
-                GetCurrentProcess(),
-                funcAddr,
+                Process.GetCurrentProcess().Handle,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -4496,19 +4459,19 @@ namespace Code_Execution
             //EnumLanguageGroupLocalesW
             /*
             EnumLanguageGroupLocales(
-                funcAddr,
+                hMem,
                 LGRPID.LGRPID_ARABIC,
                 0,
                 0
             );
             EnumLanguageGroupLocalesA(
-                funcAddr,
+                hMem,
                 LGRPID.LGRPID_ARABIC,
                 0,
                 0
             );
             EnumLanguageGroupLocalesW(
-                funcAddr,
+                hMem,
                 LGRPID.LGRPID_ARABIC,
                 0,
                 0
@@ -4522,7 +4485,7 @@ namespace Code_Execution
             EnumObjects(
                 dc,
                 2,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -4533,15 +4496,15 @@ namespace Code_Execution
             //EnumPageFilesW
             /*
             EnumPageFiles(
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             EnumPageFilesA(
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             EnumPageFilesW(
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -4553,7 +4516,7 @@ namespace Code_Execution
             hWnd = GetTopWindow(IntPtr.Zero);
             EnumProps(
                 hWnd,
-                funcAddr
+                hMem
             );
             */
 
@@ -4566,17 +4529,17 @@ namespace Code_Execution
             hWnd = GetTopWindow(IntPtr.Zero);
             EnumPropsEx(
                 hWnd,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             EnumPropsExA(
                 hWnd,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             EnumPropsExW(
                 hWnd,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -4585,7 +4548,7 @@ namespace Code_Execution
             //EnumPwrSchemes
             /*
             EnumPwrSchemes(
-                funcAddr,
+                hMem,
                 0
             );
             */
@@ -4597,17 +4560,17 @@ namespace Code_Execution
             /*
             EnumResourceTypes(
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             EnumResourceTypesA(
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             EnumResourceTypesW(
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -4619,21 +4582,21 @@ namespace Code_Execution
             /*
             EnumResourceTypesEx(
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 0,
                 RESOURCE_ENUM.RESOURCE_ENUM_VALIDATE,
                 0
             );
             EnumResourceTypesExA(
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 0,
                 RESOURCE_ENUM.RESOURCE_ENUM_VALIDATE,
                 0
             );
             EnumResourceTypesExW(
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 0,
                 RESOURCE_ENUM.RESOURCE_ENUM_VALIDATE,
                 0
@@ -4646,15 +4609,15 @@ namespace Code_Execution
             //EnumSystemCodePagesW
             /*
             EnumSystemCodePages(
-                funcAddr,
+                hMem,
                 0
             );
             EnumSystemCodePagesA(
-                funcAddr,
+                hMem,
                 0
             );
             EnumSystemCodePagesW(
-                funcAddr,
+                hMem,
                 0
             );
             */
@@ -4665,7 +4628,7 @@ namespace Code_Execution
             EnumSystemGeoID(
                 GEOCLASS_NATION,
                 0,
-                funcAddr
+                hMem
             );
             */
 
@@ -4675,17 +4638,17 @@ namespace Code_Execution
             //EnumSystemLanguageGroupsW
             /*
             EnumSystemLanguageGroups(
-                funcAddr,
+                hMem,
                 0,
                 0
             );
             EnumSystemLanguageGroupsA(
-                funcAddr,
+                hMem,
                 0,
                 0
             );
             EnumSystemLanguageGroupsW(
-                funcAddr,
+                hMem,
                 0,
                 0
             );
@@ -4697,15 +4660,15 @@ namespace Code_Execution
             //EnumSystemLocalesW
             /*
             EnumSystemLocales(
-                funcAddr,
+                hMem,
                 0
             );
             EnumSystemLocalesA(
-                funcAddr,
+                hMem,
                 0
             );
             EnumSystemLocalesW(
-                funcAddr,
+                hMem,
                 0
             );
             */
@@ -4714,7 +4677,7 @@ namespace Code_Execution
             //EnumSystemLocalesEx
             /*
             EnumSystemLocalesEx(
-                funcAddr,
+                hMem,
                 LOCALETYPE.LOCALE_ALL,
                 0,
                 IntPtr.Zero
@@ -4726,7 +4689,7 @@ namespace Code_Execution
             /*
             EnumThreadWindows(
                 0,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -4737,17 +4700,17 @@ namespace Code_Execution
             //EnumTimeFormatsW
             /*
             EnumTimeFormats(
-                funcAddr,
+                hMem,
                 0,
                 0
             );
             EnumTimeFormatsA(
-                funcAddr,
+                hMem,
                 0,
                 0
             );
             EnumTimeFormatsW(
-                funcAddr,
+                hMem,
                 0,
                 0
             );
@@ -4757,7 +4720,7 @@ namespace Code_Execution
             //EnumTimeFormatsEx
             /*
             EnumTimeFormatsEx(
-                funcAddr,
+                hMem,
                 LOCALE_NAME_SYSTEM_DEFAULT,
                 TIME_FORMAT_FLAGS.TIME_NOSECONDS,
                 IntPtr.Zero
@@ -4770,17 +4733,17 @@ namespace Code_Execution
             //EnumUILanguagesW
             /*
             EnumUILanguages(
-                funcAddr,
+                hMem,
                 MUI_LANGUAGE_ID,
                 IntPtr.Zero
             );
             EnumUILanguagesA(
-                funcAddr,
+                hMem,
                 MUI_LANGUAGE_ID,
                 IntPtr.Zero
             );
             EnumUILanguagesW(
-                funcAddr,
+                hMem,
                 MUI_LANGUAGE_ID,
                 IntPtr.Zero
             );
@@ -4790,7 +4753,7 @@ namespace Code_Execution
             //EnumWindows
             /*
             EnumWindows(
-                funcAddr,
+                hMem,
                 0
             );
             */
@@ -4801,15 +4764,15 @@ namespace Code_Execution
             //EnumWindowStationsW
             /*
             EnumWindowStations(
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             EnumWindowStationsA(
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             EnumWindowStationsW(
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -4825,7 +4788,7 @@ namespace Code_Execution
                 "*[System/EventID=1]",
                 IntPtr.Zero,
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 EvtSubscribeToFutureEvents
             );
             long test = CveEventWrite(
@@ -4842,7 +4805,7 @@ namespace Code_Execution
             IntPtr pErf = IntPtr.Zero;
             FCICreate(ref pErf,
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 IntPtr.Zero,
                 IntPtr.Zero,
@@ -4863,7 +4826,7 @@ namespace Code_Execution
             sFR.lStructSize = (uint)Marshal.SizeOf(sFR);
             sFR.hwndOwner = GetForegroundWindow();
             sFR.Flags = FR_ENABLEHOOK;
-            sFR.lpfnHook = funcAddr;
+            sFR.lpfnHook = hMem;
             sFR.lpstrFindWhat = "a";
             sFR.lpstrReplaceWith = "a";
             sFR.wReplaceWithLen = 1;
@@ -4878,7 +4841,7 @@ namespace Code_Execution
             //FlsAlloc
             /*
             IntPtr dummy =  ConvertThreadToFiber(IntPtr.Zero);
-            IntPtr dIndex = FlsAlloc(funcAddr);
+            IntPtr dIndex = FlsAlloc(hMem);
             FlsSetValue(
                 dIndex,
                 dummy
@@ -4895,7 +4858,7 @@ namespace Code_Execution
             sOpenFileName.lStructSize = Marshal.SizeOf(sOpenFileName);
             sOpenFileName.nMaxFile = 260;
             sOpenFileName.Flags = OFN_ENABLEHOOK | OFN_EXPLORER;
-            sOpenFileName.lpfnHook = funcAddr;
+            sOpenFileName.lpfnHook = hMem;
 
             GetOpenFileName(
                 ref sOpenFileName
@@ -4912,7 +4875,7 @@ namespace Code_Execution
             sOpenFileName.lStructSize = Marshal.SizeOf(sOpenFileName);
             sOpenFileName.nMaxFile = 260;
             sOpenFileName.Flags = OFN_ENABLEHOOK | OFN_EXPLORER;
-            sOpenFileName.lpfnHook = funcAddr;
+            sOpenFileName.lpfnHook = hMem;
 
             GetSaveFileName(
                 ref sOpenFileName
@@ -4928,8 +4891,8 @@ namespace Code_Execution
             GrayString(
                 hDC,
                 IntPtr.Zero,
-                funcAddr,
-                funcAddr,
+                hMem,
+                hMem,
                 0,
                 0,
                 0,
@@ -4939,8 +4902,8 @@ namespace Code_Execution
             GrayStringA(
                 hDC,
                 IntPtr.Zero,
-                funcAddr,
-                funcAddr,
+                hMem,
+                hMem,
                 0,
                 0,
                 0,
@@ -4950,8 +4913,8 @@ namespace Code_Execution
             GrayStringW(
                 hDC,
                 IntPtr.Zero,
-                funcAddr,
-                funcAddr,
+                hMem,
+                hMem,
                 0,
                 0,
                 0,
@@ -4980,7 +4943,7 @@ namespace Code_Execution
             bool ok = ImageGetDigestStream(
                 hImg,
                 0x04,
-                funcAddr,
+                hMem,
                 _out
             );
             CloseHandle(
@@ -4996,7 +4959,7 @@ namespace Code_Execution
             /*
             ImmEnumInputContext(
                 0,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -5008,7 +4971,7 @@ namespace Code_Execution
             InitOnce initOnce = new InitOnce();
             InitOnceExecuteOnce(
                 ref initOnce,
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 out outContext
             );
@@ -5029,7 +4992,7 @@ namespace Code_Execution
 
             InternetSetStatusCallback(
                 hSession,
-                funcAddr
+                hMem
             );
 
             short INTERNET_DEFAULT_HTTPS_PORT = 443;
@@ -5058,7 +5021,7 @@ namespace Code_Execution
             /*
             LdrEnumerateLoadedModules(
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 0
             );
             */
@@ -5071,7 +5034,7 @@ namespace Code_Execution
                 0,
                 1,
                 1,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -5085,7 +5048,7 @@ namespace Code_Execution
             );
             uint dwKey = 0;
             MFAddPeriodicCallback(
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 out dwKey
             );
@@ -5106,7 +5069,7 @@ namespace Code_Execution
                 MiniDumpNormal,
                 ref s,
                 IntPtr.Zero,
-                ref funcAddr
+                ref hMem
             );
             */
 
@@ -5117,7 +5080,7 @@ namespace Code_Execution
             IntPtr hNotification = IntPtr.Zero;
             NotifyIpInterfaceChange(
                 AF_UNSPEC,
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 true,
                 ref hNotification
@@ -5129,7 +5092,7 @@ namespace Code_Execution
             /*
             IntPtr hNotification = IntPtr.Zero;
             NotifyNetworkConnectivityHintChange(
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 true,
                 out hNotification
@@ -5145,7 +5108,7 @@ namespace Code_Execution
             IntPtr hNotification = IntPtr.Zero;
             NotifyRouteChange2(
                 AF_INET,
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 true,
                 ref hNotification
@@ -5157,7 +5120,7 @@ namespace Code_Execution
             /*
             IntPtr hNotification = IntPtr.Zero;
             NotifyTeredoPortChange(
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 true,
                 ref hNotification
@@ -5171,7 +5134,7 @@ namespace Code_Execution
             uint AF_INET = 2;
             NotifyUnicastIpAddressChange(
                 AF_INET,
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 true,
                 ref hNotification
@@ -5182,8 +5145,8 @@ namespace Code_Execution
             //NtTestAlert
             /*
             QueueUserAPC(
-                funcAddr,
-                GetCurrentThread(),
+                hMem,
+                Process.GetCurrentProcess().Threads[0].Id,
                 IntPtr.Zero
             );
             NtTestAlert();
@@ -5195,7 +5158,7 @@ namespace Code_Execution
             OLEUIBUSY sOleUIBusy = new OLEUIBUSY();
             sOleUIBusy.cbStruct = (uint)Marshal.SizeOf(sOleUIBusy);
             sOleUIBusy.hWndOwner = GetForegroundWindow();
-            sOleUIBusy.lpfnHook = funcAddr;
+            sOleUIBusy.lpfnHook = hMem;
 
             OleUIBusy(
                 ref sOleUIBusy
@@ -5208,7 +5171,7 @@ namespace Code_Execution
             Guid ProviderGuid = Guid.NewGuid();
 
             PERF_PROVIDER_CONTEXT sPPC = new PERF_PROVIDER_CONTEXT();
-            sPPC.MemAllocRoutine = funcAddr;
+            sPPC.MemAllocRoutine = hMem;
             sPPC.ContextSize = (uint)Marshal.SizeOf(sPPC);
 
             IntPtr hProvider = IntPtr.Zero;
@@ -5230,7 +5193,7 @@ namespace Code_Execution
             IntPtr hRegister = IntPtr.Zero;
             PowerRegisterForEffectivePowerModeNotifications(
                 EFFECTIVE_POWER_MODE_V2,
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 ref hRegister
             );
@@ -5246,7 +5209,7 @@ namespace Code_Execution
             PRINTDLG sPrintDlg = new PRINTDLG();
             sPrintDlg.lStructSize = (uint)Marshal.SizeOf(sPrintDlg);
             sPrintDlg.Flags = PD_ENABLEPRINTHOOK;
-            sPrintDlg.lpfnPrintHook = funcAddr;
+            sPrintDlg.lpfnPrintHook = hMem;
 
             PrintDlg(
                 sPrintDlg
@@ -5276,7 +5239,7 @@ namespace Code_Execution
                 buf,
                 0,
                 ref overlap,
-                funcAddr
+                hMem
             );
             SleepEx(1000,true);
             CloseHandle(hImg);
@@ -5286,7 +5249,7 @@ namespace Code_Execution
             //RegisterApplicationRecoveryCallback
             /*
             uint ret = RegisterApplicationRecoveryCallback(
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 5,
                 0
@@ -5298,7 +5261,7 @@ namespace Code_Execution
             //RegisterWaitChainCOMCallback
             /*
             RegisterWaitChainCOMCallback(
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -5320,7 +5283,7 @@ namespace Code_Execution
             RegisterWaitForSingleObject(
                 out NewWaitObj,
                 hImg,
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 0,
                 WT_EXECUTEONLYONCE
@@ -5336,7 +5299,7 @@ namespace Code_Execution
             sFR.lStructSize = (uint)Marshal.SizeOf(sFR);
             sFR.hwndOwner = GetForegroundWindow();
             sFR.Flags = FR_ENABLEHOOK;
-            sFR.lpfnHook = funcAddr;
+            sFR.lpfnHook = hMem;
             sFR.lpstrFindWhat = "h7arW";
             sFR.lpstrReplaceWith = "h7arW";
             sFR.wReplaceWithLen = 1;
@@ -5353,7 +5316,7 @@ namespace Code_Execution
             RoInspectCapturedStackBackTrace(
                 IntPtr.Zero,
                 0,
-                funcAddr,
+                hMem,
                 0,
                 0,
                 UIntPtr.Zero
@@ -5366,7 +5329,7 @@ namespace Code_Execution
             RoInspectThreadErrorInfo(
                 UIntPtr.Zero,
                 0,
-                funcAddr,
+                hMem,
                 0,
                 UIntPtr.Zero
             );
@@ -5382,7 +5345,7 @@ namespace Code_Execution
                 0x1337,
                 UIntPtr.Zero,
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 UIntPtr.Zero
             );
             SendMessageCallbackA(
@@ -5390,7 +5353,7 @@ namespace Code_Execution
                 0x1337,
                 UIntPtr.Zero,
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 UIntPtr.Zero
             );
             SendMessageCallbackW(
@@ -5398,7 +5361,7 @@ namespace Code_Execution
                 0x1337,
                 UIntPtr.Zero,
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 UIntPtr.Zero
             );
             MSG msg = new MSG();
@@ -5421,7 +5384,7 @@ namespace Code_Execution
                 IntPtr.Zero,
                 IntPtr.Zero,
                 0,
-                funcAddr
+                hMem
             );
 
             MSG msg = new MSG();
@@ -5457,19 +5420,19 @@ namespace Code_Execution
             SetupCommitFileQueue(
                 GetTopWindow(IntPtr.Zero),
                 hQueue,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             SetupCommitFileQueueA(
                 GetTopWindow(IntPtr.Zero),
                 hQueue,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             SetupCommitFileQueueW(
                 GetTopWindow(IntPtr.Zero),
                 hQueue,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -5510,7 +5473,7 @@ namespace Code_Execution
                 string.Empty,
                 "C:\\Users\\Public\\test.txt",
                 SP_COPY_NOOVERWRITE | SP_COPY_NEWER_OR_SAME | SP_COPY_SOURCE_ABSOLUTE,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -5521,7 +5484,7 @@ namespace Code_Execution
             SetupIterateCabinet(
                 "C:\\Windows\\SoftwareDistribution\\Download\\b075fa8225bab47caea704c57ab09fce\\DesktopDeployment.cab",
                 0,
-                funcAddr,
+                hMem,
                 0
             );
             */
@@ -5539,7 +5502,7 @@ namespace Code_Execution
                 hTimer,
                 ref sLI,
                 0,
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 false
             );
@@ -5555,7 +5518,7 @@ namespace Code_Execution
             sBI.pszDisplayName = IntPtr.Zero;
             sBI.lpszTitle = "h7arW";
             sBI.ulFlags = 0;
-            sBI.lpfn = funcAddr;
+            sBI.lpfn = hMem;
 
             SHBrowseForFolder(
                 ref sBI
@@ -5566,10 +5529,10 @@ namespace Code_Execution
             //SHCreateThread
             /*
             SHCreateThread(
-                GetCurrentThread(),
+                Process.GetCurrentProcess().Threads[0].Id,
                 0,
                 0,
-                funcAddr
+                hMem
             );
             */
 
@@ -5578,7 +5541,7 @@ namespace Code_Execution
             /*
             IntPtr hThread = IntPtr.Zero;
             SHCreateThreadWithHandle(
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 0,
                 IntPtr.Zero,
@@ -5603,12 +5566,12 @@ namespace Code_Execution
 
             StackWalk(
                 MachineType.IMAGE_FILE_MACHINE_AMD64,
-                GetCurrentProcess(),
+                Process.GetCurrentProcess().Handle,
                 IntPtr.Zero,
                 ref sStackFrame,
                 ref sContext64,
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 IntPtr.Zero
             );
@@ -5618,12 +5581,12 @@ namespace Code_Execution
 
             StackWalk64(
                 MachineType.IMAGE_FILE_MACHINE_AMD64,
-                GetCurrentProcess(),
+                Process.GetCurrentProcess().Handle,
                 IntPtr.Zero,
                 ref sStackFrame64,
                 ref sContext,
                 IntPtr.Zero,
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 IntPtr.Zero
             );
@@ -5637,7 +5600,7 @@ namespace Code_Execution
             );
             IntPtr sFiber = CreateFiber(
                 0x100,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             SwitchToFiber(
@@ -5649,12 +5612,12 @@ namespace Code_Execution
             //SymEnumProcesses
             /*
             SymInitialize(
-                GetCurrentProcess(),
+                Process.GetCurrentProcess().Handle,
                 string.Empty,
                 false
             );
             SymEnumProcesses(
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -5662,7 +5625,7 @@ namespace Code_Execution
             //[6A]
             //SymFindFileInPath
             /*
-            IntPtr hProcess = GetCurrentProcess();
+            IntPtr hProcess = Process.GetCurrentProcess().Handle;
             SymInitialize(
                 hProcess,
                 string.Empty,
@@ -5686,7 +5649,7 @@ namespace Code_Execution
                 0,
                 SSRVOPT_DWORD,
                 dummy,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -5694,7 +5657,7 @@ namespace Code_Execution
             //[6B]
             //SymRegisterCallback
             /*
-            IntPtr hProcess = GetCurrentProcess();
+            IntPtr hProcess = Process.GetCurrentProcess().Handle;
             SymInitialize(
                 hProcess,
                 String.Empty,
@@ -5702,7 +5665,7 @@ namespace Code_Execution
             );
             SymRegisterCallback(
                 hProcess,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             SymRefreshModuleList(
@@ -5714,7 +5677,7 @@ namespace Code_Execution
             //TrySubmitThreadpoolCallback
             /*
             TrySubmitThreadpoolCallback(
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 IntPtr.Zero
             );
@@ -5728,7 +5691,7 @@ namespace Code_Execution
                 Process.GetCurrentProcess().Handle,
                 0,
                 0,
-                funcAddr,
+                hMem,
                 IntPtr.Zero
             );
             */
@@ -5741,7 +5704,7 @@ namespace Code_Execution
             WindowsInspectString(
                 "Wra7h",
                 0x8664,
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 ref len,
                 ref pStringAddr
@@ -5766,7 +5729,7 @@ namespace Code_Execution
             uint WINHTTP_CALLBACK_FLAG_ALL_NOTIFICATIONS = 0xFFFFFFFF;
             WinHttpSetStatusCallback(
                 hSession,
-                funcAddr,
+                hMem,
                 WINHTTP_CALLBACK_FLAG_ALL_NOTIFICATIONS,
                 IntPtr.Zero
             );
@@ -5790,7 +5753,7 @@ namespace Code_Execution
                 out pvContext
             );
             WriteEncryptedFileRaw(
-                funcAddr,
+                hMem,
                 IntPtr.Zero,
                 pvContext
             );
@@ -5819,7 +5782,7 @@ namespace Code_Execution
                 buf,
                 0,
                 ref overlap,
-                funcAddr
+                hMem
             );
             SleepEx(1000,true);
             CloseHandle(
@@ -5831,12 +5794,14 @@ namespace Code_Execution
             //PdhBrowseCounters
             /*
             PDH_BROWSE_DLG_CONFIG sBDC = new PDH_BROWSE_DLG_CONFIG();
-            sBDC.pCallBack = funcAddr;
+            sBDC.pCallBack = hMem;
 
             PdhBrowseCounters(
                 ref sBDC
             );
             */
+
+            //FREE MEMORY
         }
     }
 }
